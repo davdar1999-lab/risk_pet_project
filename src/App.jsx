@@ -6,21 +6,27 @@ const bouquets = [
     name: 'Cotton Candy Peonies',
     description: 'Пионовый микс в пастели с вайбом Pinterest.',
     price: 2490,
-    badge: 'Trending'
+    badge: 'Trending',
+    image:
+      'https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?auto=format&fit=crop&w=900&q=80'
   },
   {
     id: 2,
     name: 'Midnight Tulip Glow',
     description: 'Контраст тюльпанов и эвкалипта для фото в ленту.',
     price: 1990,
-    badge: 'Aesthetic'
+    badge: 'Aesthetic',
+    image:
+      'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&w=900&q=80'
   },
   {
     id: 3,
     name: 'Soft Core Roses',
     description: 'Нежные розы с упаковкой в стиле clean girl.',
     price: 2790,
-    badge: 'Best Seller'
+    badge: 'Best Seller',
+    image:
+      'https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=900&q=80'
   }
 ];
 
@@ -30,6 +36,9 @@ export default function App() {
   const [cart, setCart] = useState({});
   const [promoCode, setPromoCode] = useState('');
   const [appliedPromo, setAppliedPromo] = useState('');
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+  const [deliveryType, setDeliveryType] = useState('delivery');
+  const [isPaid, setIsPaid] = useState(false);
 
   const addToCart = (id) => {
     setCart((prev) => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
@@ -51,17 +60,28 @@ export default function App() {
     setAppliedPromo(promoCode);
   };
 
+  const openPayment = () => {
+    if (!items.length) return;
+    setIsPaymentOpen(true);
+  };
+
+  const handlePay = (event) => {
+    event.preventDefault();
+    setIsPaid(true);
+  };
+
   return (
     <div className="page">
       <header className="hero">
         <h1>Bloom Vibe</h1>
-        <p>Цветочный магазин для зумеров: стиль, эмоции и эстетика Pinterest.</p>
+        <p>Наши букеты это стиль, эмоции и эстетика Pinterest.</p>
       </header>
 
       <main className="layout">
         <section className="catalog">
           {bouquets.map((bouquet) => (
             <article key={bouquet.id} className="card">
+              <img src={bouquet.image} alt={bouquet.name} className="bouquetImage" />
               <span className="badge">{bouquet.badge}</span>
               <h2>{bouquet.name}</h2>
               <p>{bouquet.description}</p>
@@ -122,8 +142,72 @@ export default function App() {
               <strong>{formatRub(total)}</strong>
             </div>
           </div>
+
+          <button className="payButton" onClick={openPayment}>
+            Оплатить
+          </button>
         </aside>
       </main>
+
+      {isPaymentOpen && (
+        <div className="modalOverlay" onClick={() => setIsPaymentOpen(false)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h3>Онлайн-оплата</h3>
+            {isPaid ? (
+              <div className="paidState">
+                <p>Оплата прошла успешно 💖</p>
+                <p>Способ получения: {deliveryType === 'delivery' ? 'Доставка' : 'Самовывоз'}.</p>
+                <button onClick={() => setIsPaymentOpen(false)}>Закрыть</button>
+              </div>
+            ) : (
+              <form onSubmit={handlePay} className="paymentForm">
+                <label>
+                  Номер карты
+                  <input type="text" placeholder="0000 0000 0000 0000" required />
+                </label>
+                <div className="row2">
+                  <label>
+                    Срок
+                    <input type="text" placeholder="MM/YY" required />
+                  </label>
+                  <label>
+                    CVV
+                    <input type="password" placeholder="***" required />
+                  </label>
+                </div>
+                <label>
+                  Имя владельца
+                  <input type="text" placeholder="IVAN IVANOV" required />
+                </label>
+
+                <fieldset>
+                  <legend>Получение</legend>
+                  <label className="radio">
+                    <input
+                      type="radio"
+                      name="delivery"
+                      checked={deliveryType === 'delivery'}
+                      onChange={() => setDeliveryType('delivery')}
+                    />
+                    Доставка курьером
+                  </label>
+                  <label className="radio">
+                    <input
+                      type="radio"
+                      name="delivery"
+                      checked={deliveryType === 'pickup'}
+                      onChange={() => setDeliveryType('pickup')}
+                    />
+                    Самовывоз
+                  </label>
+                </fieldset>
+
+                <button type="submit">Подтвердить оплату {formatRub(total)}</button>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
