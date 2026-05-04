@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 540">
+<defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#ffd7ef"/><stop offset="1" stop-color="#ffe8d5"/></linearGradient></defs>
+<rect width="800" height="540" fill="url(#g)"/>
+<circle cx="250" cy="200" r="90" fill="#ff8fc8"/><circle cx="360" cy="180" r="85" fill="#ffb1d8"/><circle cx="460" cy="220" r="90" fill="#ffc9e6"/>
+<circle cx="330" cy="280" r="100" fill="#ff9fd0"/><rect x="300" y="300" width="220" height="170" rx="18" fill="#f2d4ab"/>
+<text x="50%" y="500" text-anchor="middle" font-size="42" fill="#5a3a63" font-family="Arial">Peony bouquet</text>
+</svg>
