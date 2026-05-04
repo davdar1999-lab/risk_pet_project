@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 540">
+<defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#ffe1ea"/><stop offset="1" stop-color="#f3dcff"/></linearGradient></defs>
+<rect width="800" height="540" fill="url(#g)"/>
+<circle cx="290" cy="170" r="82" fill="#ff5b90"/><circle cx="390" cy="170" r="82" fill="#ff77a5"/><circle cx="490" cy="170" r="82" fill="#ff8fb4"/>
+<circle cx="340" cy="255" r="92" fill="#ff6a99"/><circle cx="440" cy="255" r="92" fill="#ff84ae"/>
+<rect x="295" y="320" width="230" height="150" rx="16" fill="#f4dab9"/>
+<text x="50%" y="500" text-anchor="middle" font-size="42" fill="#693456" font-family="Arial">Rose bouquet</text>
+</svg>
