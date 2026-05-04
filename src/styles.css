@@ -11,14 +11,14 @@ button { border:0; border-radius:999px; padding:.55rem .95rem; color:#fff; backg
 .controls { margin:1rem 0; display:grid; grid-template-columns:repeat(4,minmax(120px,1fr)); gap:.6rem; }
 select,input { width:100%; border-radius:14px; border:1px solid #e7d6f3; padding:.55rem .75rem; }
 .range { background:rgba(255,255,255,.7); border-radius:14px; padding:.4rem .7rem; font-size:.9rem; }
-.layout { display:grid; grid-template-columns:2fr 1fr; gap:1rem; }
-.catalog { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; }
+.layout { display:grid; grid-template-columns:minmax(0,2fr) minmax(320px,1fr); gap:1rem; align-items:start; }
+.catalog { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; align-items:start; align-content:start; }
 .card,.cart,.modal,.extraBlocks>div { background:rgba(255,255,255,.74); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.85); border-radius:20px; box-shadow:0 10px 30px rgba(118,57,155,.12); }
-.card { padding:1rem; display:flex; flex-direction:column; gap:.5rem; }
+.card { padding:1rem; display:flex; flex-direction:column; gap:.5rem; min-height: 0; }
 .bouquetImage { width:100%; height:190px; object-fit:cover; border-radius:14px; }
 .badge { align-self:flex-start; font-size:.75rem; padding:.25rem .5rem; border-radius:999px; background:#f3ddff; }
 .cardFooter { margin-top:auto; display:flex; justify-content:space-between; align-items:center; gap:.5rem; }
-.cart { padding:1rem; display:flex; flex-direction:column; gap:.8rem; }
+.cart { padding:1rem; display:flex; flex-direction:column; gap:.8rem; position: sticky; top: .8rem; max-height: calc(100vh - 1.6rem); overflow: auto; }
 ul { list-style:none; margin:0; padding:0; display:grid; gap:.8rem; }
 .cartItem { display:grid; grid-template-columns:56px 1fr auto; gap:.55rem; align-items:start; }
 .cartItem img { width:56px; height:56px; border-radius:10px; object-fit:cover; }
