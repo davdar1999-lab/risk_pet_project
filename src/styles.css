@@ -1,0 +1,72 @@
+:root {
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: #2f1e36;
+  background: linear-gradient(140deg, #f9f4ff 0%, #fff7f0 100%);
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; }
+
+.page { max-width: 1120px; margin: 0 auto; padding: 2rem 1rem 3rem; }
+.hero { text-align: center; margin-bottom: 2rem; }
+.hero h1 { font-size: clamp(2rem, 4vw, 3.2rem); margin: 0; }
+.hero p { opacity: 0.8; }
+
+.layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.25rem;
+}
+
+.catalog { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 1rem; }
+.card, .cart {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,.85);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(118, 57, 155, 0.12);
+}
+.card { padding: 1rem; display: flex; flex-direction: column; gap: .6rem; }
+.badge {
+  align-self: flex-start;
+  font-size: .75rem;
+  padding: .25rem .5rem;
+  border-radius: 99px;
+  background: #f3ddff;
+}
+.card h2 { margin: 0; font-size: 1.05rem; }
+.card p { margin: 0; opacity: .82; }
+.cardFooter { margin-top: auto; display:flex; justify-content: space-between; align-items:center; }
+button {
+  border: 0;
+  border-radius: 999px;
+  padding: .55rem .95rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #d64dff, #ff7bb1);
+  cursor: pointer;
+}
+
+.cart { padding: 1rem; display:flex; flex-direction: column; gap: 1rem; }
+.cart h3 { margin: 0; }
+.empty { opacity: .75; }
+ul { margin: 0; padding: 0; list-style: none; display: grid; gap: .6rem; }
+li { display:flex; justify-content: space-between; gap:.5rem; }
+li span { display:block; font-weight: 600; }
+small { opacity: .7; }
+.promo label { font-size: .88rem; opacity: .85; }
+.promoRow { display:flex; gap: .5rem; margin-top: .3rem; }
+input {
+  flex:1;
+  border-radius: 999px;
+  border: 1px solid #e7d6f3;
+  padding: .55rem .8rem;
+}
+.success { color: #117440; font-weight: 600; }
+.info { color: #5b4170; }
+.summary div { display:flex; justify-content: space-between; margin-top: .3rem; }
+.summary div:last-child { font-size: 1.1rem; }
+
+@media (max-width: 860px) {
+  .layout { grid-template-columns: 1fr; }
+}
