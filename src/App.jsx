@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 const bouquets = [
-  { id: 1, name: 'Cotton Candy Peonies', price: 2490, rating: 4.9, badge: 'Хит', occasion: 'birthday', day: 'today', style: 'romantic', sizeBase: 'M', image: 'https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=1200' },
-  { id: 2, name: 'Midnight Tulip Glow', price: 1990, rating: 4.7, badge: 'Сегодня', occasion: 'date', day: 'today', style: 'modern', sizeBase: 'S', image: 'https://images.pexels.com/photos/1129397/pexels-photo-1129397.jpeg?auto=compress&cs=tinysrgb&w=1200' },
-  { id: 3, name: 'Soft Core Roses', price: 2790, rating: 5.0, badge: 'Премиум', occasion: 'love', day: 'tomorrow', style: 'classic', sizeBase: 'L', image: 'https://images.pexels.com/photos/1058770/pexels-photo-1058770.jpeg?auto=compress&cs=tinysrgb&w=1200' }
+  { id: 1, name: 'Cotton Candy Peonies', price: 2490, rating: 4.9, badge: 'Хит', occasion: 'birthday', day: 'today', style: 'romantic', sizeBase: 'M', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Bouquet_of_roses.jpg/1280px-Bouquet_of_roses.jpg' },
+  { id: 2, name: 'Midnight Tulip Glow', price: 1990, rating: 4.7, badge: 'Сегодня', occasion: 'date', day: 'today', style: 'modern', sizeBase: 'S', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Rose_bouquet.jpg/1280px-Rose_bouquet.jpg' },
+  { id: 3, name: 'Soft Core Roses', price: 2790, rating: 5.0, badge: 'Премиум', occasion: 'love', day: 'tomorrow', style: 'classic', sizeBase: 'L', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Flower_bouquet.jpg/1280px-Flower_bouquet.jpg' }
 ];
 
 const addons = [
@@ -112,7 +112,7 @@ export default function App() {
             <button className="ghost">Доставка сегодня</button>
           </div>
         </div>
-        <img src="https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Эмоциональный букет" className="heroImage" referrerPolicy="no-referrer" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Beautiful_bouquet_of_flowers.jpg/1280px-Beautiful_bouquet_of_flowers.jpg" alt="Эмоциональный букет" className="heroImage" referrerPolicy="no-referrer" />
       </header>
 
       <section className="controls">
