@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 const bouquets = [
-  { id: 1, name: 'Cotton Candy Peonies', price: 2490, rating: 4.9, badge: 'Хит', occasion: 'birthday', day: 'today', style: 'romantic', sizeBase: 'M', image: 'https://cdn.pixabay.com/photo/2018/03/30/15/11/rose-3275739_1280.jpg' },
-  { id: 2, name: 'Midnight Tulip Glow', price: 1990, rating: 4.7, badge: 'Сегодня', occasion: 'date', day: 'today', style: 'modern', sizeBase: 'S', image: 'https://cdn.pixabay.com/photo/2016/11/29/09/32/flowers-1868266_1280.jpg' },
-  { id: 3, name: 'Soft Core Roses', price: 2790, rating: 5.0, badge: 'Премиум', occasion: 'love', day: 'tomorrow', style: 'classic', sizeBase: 'L', image: 'https://cdn.pixabay.com/photo/2017/08/06/15/13/flower-2590649_1280.jpg' }
+  { id: 1, name: 'Cotton Candy Peonies', price: 2490, rating: 4.9, badge: 'Хит', occasion: 'birthday', day: 'today', style: 'romantic', sizeBase: 'M', image: 'https://cdn.pixabay.com/photo/2018/03/30/15/11/rose-3275739_1280.jpg', fallbackImage: 'https://picsum.photos/id/292/1200/900' },
+  { id: 2, name: 'Midnight Tulip Glow', price: 1990, rating: 4.7, badge: 'Сегодня', occasion: 'date', day: 'today', style: 'modern', sizeBase: 'S', image: 'https://cdn.pixabay.com/photo/2016/11/29/09/32/flowers-1868266_1280.jpg', fallbackImage: 'https://picsum.photos/id/152/1200/900' },
+  { id: 3, name: 'Soft Core Roses', price: 2790, rating: 5.0, badge: 'Премиум', occasion: 'love', day: 'tomorrow', style: 'classic', sizeBase: 'L', image: 'https://cdn.pixabay.com/photo/2017/08/06/15/13/flower-2590649_1280.jpg', fallbackImage: 'https://picsum.photos/id/106/1200/900' }
 ];
 
 const addons = [
@@ -80,7 +80,7 @@ export default function App() {
     const bouquet = bouquets.find((b) => b.id === i.bouquetId);
     const bouquetPrice = Math.round(i.basePrice * sizeMultiplier[i.size]);
     const addonsTotal = i.addons.reduce((acc, a) => acc + a.price, 0);
-    return { ...i, image: bouquet?.image, bouquetPrice, addonsTotal, lineTotal: bouquetPrice + addonsTotal };
+    return { ...i, image: bouquet?.image, fallbackImage: bouquet?.fallbackImage, bouquetPrice, addonsTotal, lineTotal: bouquetPrice + addonsTotal };
   });
 
   const subtotal = enriched.reduce((acc, i) => acc + i.lineTotal, 0);
@@ -112,7 +112,7 @@ export default function App() {
             <button className="ghost">Доставка сегодня</button>
           </div>
         </div>
-        <img src="https://cdn.pixabay.com/photo/2018/03/30/15/11/rose-3275739_1280.jpg" alt="Эмоциональный букет" className="heroImage" referrerPolicy="no-referrer" />
+        <img src="https://cdn.pixabay.com/photo/2018/03/30/15/11/rose-3275739_1280.jpg" alt="Эмоциональный букет" className="heroImage" referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = "https://picsum.photos/id/433/1400/900"; }} />
       </header>
 
       <section className="controls">
@@ -130,7 +130,7 @@ export default function App() {
         <section className="catalog">
           {filtered.length === 0 ? <p className="emptyState">Ничего не найдено. Измени фильтры.</p> : filtered.map((bouquet) => (
             <article key={bouquet.id} className="card">
-              <img src={bouquet.image} alt={bouquet.name} className="bouquetImage" referrerPolicy="no-referrer" loading="lazy" onError={(e) => { e.currentTarget.src = "/images/bouquet-1.svg"; }} />
+              <img src={bouquet.image} alt={bouquet.name} className="bouquetImage" referrerPolicy="no-referrer" loading="lazy" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = bouquet.fallbackImage; }} />
               <span className="badge">{bouquet.badge}</span>
               <h2>{bouquet.name}</h2>
               <p>⭐ {bouquet.rating}</p>
@@ -144,7 +144,7 @@ export default function App() {
           {enriched.length === 0 ? <p className="empty">Добавь букет — и собери идеальный подарок ✨</p> : (
             <ul>{enriched.map((item) => (
               <li key={item.uid} className="cartItem">
-                <img src={item.image} alt={item.name} referrerPolicy="no-referrer" loading="lazy" onError={(e) => { e.currentTarget.src = "/images/bouquet-1.svg"; }} />
+                <img src={item.image} alt={item.name} referrerPolicy="no-referrer" loading="lazy" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = item.fallbackImage; }} />
                 <div>
                   <span>{item.name}</span>
                   <select value={item.size} onChange={(e) => updateItem(item.uid, { size: e.target.value })}><option>S</option><option>M</option><option>L</option></select>
