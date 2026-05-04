@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 const bouquets = [
-  { id: 1, name: 'Cotton Candy Peonies', price: 2490, rating: 4.9, badge: 'Хит', occasion: 'birthday', day: 'today', style: 'romantic', sizeBase: 'M', image: '/images/bouquet-1.svg' },
-  { id: 2, name: 'Midnight Tulip Glow', price: 1990, rating: 4.7, badge: 'Сегодня', occasion: 'date', day: 'today', style: 'modern', sizeBase: 'S', image: '/images/bouquet-2.svg' },
-  { id: 3, name: 'Soft Core Roses', price: 2790, rating: 5.0, badge: 'Премиум', occasion: 'love', day: 'tomorrow', style: 'classic', sizeBase: 'L', image: '/images/bouquet-3.svg' }
+  { id: 1, name: 'Cotton Candy Peonies', price: 2490, rating: 4.9, badge: 'Хит', occasion: 'birthday', day: 'today', style: 'romantic', sizeBase: 'M', image: 'https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=1200' },
+  { id: 2, name: 'Midnight Tulip Glow', price: 1990, rating: 4.7, badge: 'Сегодня', occasion: 'date', day: 'today', style: 'modern', sizeBase: 'S', image: 'https://images.pexels.com/photos/1129397/pexels-photo-1129397.jpeg?auto=compress&cs=tinysrgb&w=1200' },
+  { id: 3, name: 'Soft Core Roses', price: 2790, rating: 5.0, badge: 'Премиум', occasion: 'love', day: 'tomorrow', style: 'classic', sizeBase: 'L', image: 'https://images.pexels.com/photos/1058770/pexels-photo-1058770.jpeg?auto=compress&cs=tinysrgb&w=1200' }
 ];
 
 const addons = [
@@ -112,7 +112,7 @@ export default function App() {
             <button className="ghost">Доставка сегодня</button>
           </div>
         </div>
-        <img src="/images/bouquet-1.svg" alt="Эмоциональный букет" className="heroImage" />
+        <img src="https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Эмоциональный букет" className="heroImage" referrerPolicy="no-referrer" />
       </header>
 
       <section className="controls">
@@ -130,7 +130,7 @@ export default function App() {
         <section className="catalog">
           {filtered.length === 0 ? <p className="emptyState">Ничего не найдено. Измени фильтры.</p> : filtered.map((bouquet) => (
             <article key={bouquet.id} className="card">
-              <img src={bouquet.image} alt={bouquet.name} className="bouquetImage" />
+              <img src={bouquet.image} alt={bouquet.name} className="bouquetImage" referrerPolicy="no-referrer" loading="lazy" />
               <span className="badge">{bouquet.badge}</span>
               <h2>{bouquet.name}</h2>
               <p>⭐ {bouquet.rating}</p>
@@ -144,7 +144,7 @@ export default function App() {
           {enriched.length === 0 ? <p className="empty">Добавь букет — и собери идеальный подарок ✨</p> : (
             <ul>{enriched.map((item) => (
               <li key={item.uid} className="cartItem">
-                <img src={item.image} alt={item.name} />
+                <img src={item.image} alt={item.name} referrerPolicy="no-referrer" loading="lazy" />
                 <div>
                   <span>{item.name}</span>
                   <select value={item.size} onChange={(e) => updateItem(item.uid, { size: e.target.value })}><option>S</option><option>M</option><option>L</option></select>
