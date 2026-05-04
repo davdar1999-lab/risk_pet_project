@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 const bouquets = [
-  { id: 1, name: 'Cotton Candy Peonies', price: 2490, rating: 4.9, badge: 'Хит', occasion: 'birthday', day: 'today', style: 'romantic', sizeBase: 'M', image: 'https://loremflickr.com/1200/900/flowers,bouquet?lock=11' },
-  { id: 2, name: 'Midnight Tulip Glow', price: 1990, rating: 4.7, badge: 'Сегодня', occasion: 'date', day: 'today', style: 'modern', sizeBase: 'S', image: 'https://loremflickr.com/1200/900/roses,bouquet?lock=12' },
-  { id: 3, name: 'Soft Core Roses', price: 2790, rating: 5.0, badge: 'Премиум', occasion: 'love', day: 'tomorrow', style: 'classic', sizeBase: 'L', image: 'https://loremflickr.com/1200/900/tulips,bouquet?lock=13' }
+  { id: 1, name: 'Cotton Candy Peonies', price: 2490, rating: 4.9, badge: 'Хит', occasion: 'birthday', day: 'today', style: 'romantic', sizeBase: 'M', image: 'https://cdn.pixabay.com/photo/2018/03/30/15/11/rose-3275739_1280.jpg' },
+  { id: 2, name: 'Midnight Tulip Glow', price: 1990, rating: 4.7, badge: 'Сегодня', occasion: 'date', day: 'today', style: 'modern', sizeBase: 'S', image: 'https://cdn.pixabay.com/photo/2016/11/29/09/32/flowers-1868266_1280.jpg' },
+  { id: 3, name: 'Soft Core Roses', price: 2790, rating: 5.0, badge: 'Премиум', occasion: 'love', day: 'tomorrow', style: 'classic', sizeBase: 'L', image: 'https://cdn.pixabay.com/photo/2017/08/06/15/13/flower-2590649_1280.jpg' }
 ];
 
 const addons = [
@@ -112,7 +112,7 @@ export default function App() {
             <button className="ghost">Доставка сегодня</button>
           </div>
         </div>
-        <img src="https://loremflickr.com/1200/900/flowers,bouquet?lock=11" alt="Эмоциональный букет" className="heroImage" referrerPolicy="no-referrer" />
+        <img src="https://cdn.pixabay.com/photo/2018/03/30/15/11/rose-3275739_1280.jpg" alt="Эмоциональный букет" className="heroImage" referrerPolicy="no-referrer" />
       </header>
 
       <section className="controls">
