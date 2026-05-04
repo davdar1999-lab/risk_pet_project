@@ -31,31 +31,47 @@ Bloom Vibe — frontend-only прототип цветочного e-commerce с
 
 ### 4.1 Слои внутри `src/App.jsx`
 1. **Domain constants**
-   - `bouquets` — каталог букетов (цены, бейджи, изображения, fallback).
+   - `bouquets` — каталог букетов (цены, бейджи, изображения, fallback, availableDates).
    - `addons` — доп. товары (ваза, шоколад и т.п.).
    - `sizeMultiplier` — коэффициенты цены по размерам.
 
-2. **State management (React hooks)**
+2. **Mock API (БТ 12.3.7)**
+   - `checkProductAvailability(productId, date)` — проверка доступности товара на дату.
+   - `checkCartAvailability(cartItems)` — проверка всех товаров корзины.
+   - Возвращают: `{ isAvailable, reason?, availableDeliveryDates[], alternatives[] }`.
+
+3. **State management (React hooks)**
    - Фильтры: `city`, `date`, `occasion`, `maxPrice`.
    - Корзина: `cart` (инициализация из `localStorage`).
    - Промокоды: `promoCode`, `appliedPromo`.
    - Checkout UI: `isPaymentOpen`, `deliveryType`, `isPaid`.
+   - **Доступность (БТ 12.3.6):** `availabilityStatus`, `isCheckingAvailability`, `selectedReplacement`.
 
-3. **Computed model**
+4. **Computed model**
    - `filtered` — отфильтрованный каталог.
    - `enriched` — корзина с вычисленными `lineTotal` и изображениями.
    - `subtotal`, `deliveryCost`, `total`.
 
-4. **UI handlers / commands**
-   - `addToCart`, `updateItem`, `toggleAddon`, `applyPromo`, `openPayment`, `handlePay`.
+5. **UI handlers / commands**
+   - `addToCart` — с проверкой доступности (БТ 12.3.6).
+   - `updateItem` — с проверкой при изменении даты.
+   - `toggleAddon`, `applyPromo`.
+   - `openPayment` — с финальной валидацией корзины.
+   - `handlePay`.
 
-5. **Side effects**
+6. **Side effects**
    - Сохранение корзины в `localStorage`.
    - Синхронизация фильтров в URL query params.
    - Аналитические события через `track(...)` (console-based stub).
 
 ### 4.2 Поток данных
-`user action -> state update -> recompute derived values -> rerender UI`
+`user action -> state update -> availability check (API mock) -> recompute derived values -> rerender UI`
+
+### 4.3 Митигация рисков (БТ 12.3)
+Реализована проверка доступности товаров:
+- **При добавлении в корзину:** блокировка при недоступности, показ альтернатив.
+- **При изменении даты:** валидация перед применением.
+- **Перед оплатой:** финальная проверка всей корзины, блокировка checkout.
 
 ## 5) Бизнес-правила
 - Мастер-промокод: `PIRAT` делает заказ бесплатным (итог `0`).

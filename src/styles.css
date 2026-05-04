@@ -39,3 +39,92 @@ ul { list-style:none; margin:0; padding:0; display:grid; gap:.8rem; }
 
 .cartItem > div { display:grid; gap:.42rem; }
 .card h2 { min-height: 86px; line-height: 1.15; }
+
+/* Стили для проверки доступности (БТ 12.3) */
+.availabilityChecking {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid #e7d6f3;
+  border-radius: 16px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 10px 30px rgba(118, 57, 155, 0.15);
+  z-index: 1001;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e7d6f3;
+  border-top-color: #8a3ead;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.availabilityAlert {
+  background: #fff3f3;
+  border: 1px solid #ffcccc;
+  border-radius: 12px;
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+}
+
+.availabilityAlert p {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+}
+
+.alternativesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin: 0.75rem 0;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.alternativeCard {
+  min-height: auto;
+  padding: 0.75rem;
+}
+
+.alternativeCard img {
+  height: 140px;
+}
+
+.alternativeCard h4 {
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+  min-height: 40px;
+}
+
+.alternativeCard p {
+  margin: 0.25rem 0;
+  font-size: 0.85rem;
+}
+
+.modalActions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.modalActions button {
+  min-width: 120px;
+}
+
+.modalActions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
