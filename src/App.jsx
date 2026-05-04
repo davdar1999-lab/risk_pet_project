@@ -7,8 +7,7 @@ const bouquets = [
     description: 'Пионовый микс в пастели с вайбом Pinterest.',
     price: 2490,
     badge: 'Trending',
-    image:
-      'https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?auto=format&fit=crop&w=900&q=80'
+    image: '/images/bouquet-1.svg'
   },
   {
     id: 2,
@@ -16,8 +15,7 @@ const bouquets = [
     description: 'Контраст тюльпанов и эвкалипта для фото в ленту.',
     price: 1990,
     badge: 'Aesthetic',
-    image:
-      'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&w=900&q=80'
+    image: '/images/bouquet-2.svg'
   },
   {
     id: 3,
@@ -25,8 +23,7 @@ const bouquets = [
     description: 'Нежные розы с упаковкой в стиле clean girl.',
     price: 2790,
     badge: 'Best Seller',
-    image:
-      'https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=900&q=80'
+    image: '/images/bouquet-3.svg'
   }
 ];
 

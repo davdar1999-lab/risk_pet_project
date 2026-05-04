@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 540">
+<defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#d7ecff"/><stop offset="1" stop-color="#ffe7f8"/></linearGradient></defs>
+<rect width="800" height="540" fill="url(#g)"/>
+<ellipse cx="250" cy="220" rx="70" ry="130" fill="#8f7bff"/><ellipse cx="350" cy="210" rx="65" ry="125" fill="#ad98ff"/>
+<ellipse cx="450" cy="220" rx="70" ry="130" fill="#c0b2ff"/><ellipse cx="550" cy="235" rx="60" ry="120" fill="#d0c4ff"/>
+<rect x="290" y="320" width="240" height="145" rx="16" fill="#cfeddd"/>
+<text x="50%" y="500" text-anchor="middle" font-size="42" fill="#3d4568" font-family="Arial">Tulip bouquet</text>
+</svg>
