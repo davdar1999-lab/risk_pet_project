@@ -7,9 +7,18 @@ const bouquets = [
 ];
 
 // Mock API для проверки доступности товаров (БТ 12.3.7)
+// Митигация риска TECHNICAL: добавлена обработка ошибок API и fallback-логика
 const checkProductAvailability = (productId, date) => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
+    // Симуляция возможной ошибки API (для демонстрации offline-режима)
+    const shouldSimulateError = Math.random() < 0.1; // 10% шанс ошибки
+    
     setTimeout(() => {
+      if (shouldSimulateError) {
+        reject(new Error('API timeout'));
+        return;
+      }
+      
       const bouquet = bouquets.find((b) => b.id === productId);
       if (!bouquet) {
         resolve({ isAvailable: false, reason: 'not_found', availableDeliveryDates: [] });
@@ -29,7 +38,20 @@ const checkProductAvailability = (productId, date) => {
 // Mock API для проверки всей корзины (БТ 12.3.7)
 const checkCartAvailability = async (cartItems) => {
   const results = await Promise.all(
-    cartItems.map((item) => checkProductAvailability(item.bouquetId, item.date).then((res) => ({ ...res, uid: item.uid, name: item.name })))
+    cartItems.map((item) => 
+      checkProductAvailability(item.bouquetId, item.date)
+        .then((res) => ({ ...res, uid: item.uid, name: item.name }))
+        .catch((error) => {
+          // При ошибке API — возвращаем статус offline
+          return { 
+            isAvailable: true, 
+            isOffline: true, 
+            reason: 'api_unavailable',
+            uid: item.uid, 
+            name: item.name 
+          };
+        })
+    )
   );
   return results;
 };
@@ -64,6 +86,10 @@ export default function App() {
   const [availabilityStatus, setAvailabilityStatus] = useState({}); // { uid: { isAvailable, reason, alternatives } }
   const [isCheckingAvailability, setIsCheckingAvailability] = useState(false);
   const [selectedReplacement, setSelectedReplacement] = useState(null); // { uid, replacementBouquet }
+  
+  // Митигация риска OPERATIONAL: offline-режим с ручной проверкой
+  const [isOfflineMode, setIsOfflineMode] = useState(false);
+  const [apiError, setApiError] = useState(null);
 
   useEffect(() => track('view_homepage'), []);
   useEffect(() => localStorage.setItem('bloom-cart', JSON.stringify(cart)), [cart]);
@@ -168,23 +194,42 @@ export default function App() {
 
   const subtotal = enriched.reduce((acc, i) => acc + i.lineTotal, 0);
   const deliveryCost = deliveryType === 'delivery' ? 390 : 0;
-  const isMasterPromo = appliedPromo.trim().toUpperCase() === 'PIRAT';
+  
+  // Митигация риска CONDUCT: удален мастер-промокод PIRAT
+  // Промокоды должны валидироваться на сервере с проверкой:
+  // - срока действия, минимальной суммы, максимального размера скидки
+  // - количества применений, whitelist пользователей
+  // Запрещены промокоды со 100% скидкой без явных ограничений
+  const isMasterPromo = false; // PIRAT промокод удален из кода
   const total = isMasterPromo ? 0 : subtotal + deliveryCost;
 
   const applyPromo = () => setAppliedPromo(promoCode);
   
   // БТ 12.3.6: Финальная проверка доступности перед оплатой
+  // Митигация риска OPERATIONAL: обработка offline-режима
   const openPayment = async () => {
     if (!enriched.length) return;
-    
+
     setIsCheckingAvailability(true);
     try {
       const availabilityResults = await checkCartAvailability(enriched);
-      const hasUnavailable = availabilityResults.some((r) => !r.isAvailable);
       
+      // Проверка на offline-режим (ошибки API)
+      const hasOfflineItems = availabilityResults.some((r) => r.isOffline);
+      if (hasOfflineItems) {
+        setIsOfflineMode(true);
+        setApiError('api_unavailable');
+        track('api_availability_offline_mode_entered');
+        // Не блокируем оплату — разрешаем checkout с ручной проверкой
+        // Пользователь видит banner и может продолжить
+      }
+      
+      // Проверка на реально недоступные товары (не offline)
+      const hasUnavailable = availabilityResults.some((r) => !r.isAvailable && !r.isOffline);
+
       if (hasUnavailable) {
         // Найти первый недоступный товар и показать альтернативы
-        const unavailable = availabilityResults.find((r) => !r.isAvailable);
+        const unavailable = availabilityResults.find((r) => !r.isAvailable && !r.isOffline);
         const item = enriched.find((i) => i.uid === unavailable.uid);
         setSelectedReplacement({
           uid: unavailable.uid,
@@ -196,9 +241,14 @@ export default function App() {
         track('checkout_availability_error', { uid: unavailable.uid, bouquetId: item.bouquetId, reason: unavailable.reason });
         return; // Не открывать оплату
       }
-      
+
       setIsPaymentOpen(true);
-      track('payment_started', { total });
+      track('payment_started', { total, isOfflineMode: hasOfflineItems });
+    } catch (error) {
+      // Критическая ошибка API — переход в offline-режим
+      setIsOfflineMode(true);
+      setApiError('api_error');
+      track('api_availability_offline_mode_entered', { error: error.message });
     } finally {
       setIsCheckingAvailability(false);
     }
@@ -210,8 +260,27 @@ export default function App() {
     track('purchase_success', { total, orderId: `BV-${Math.floor(Math.random() * 90000 + 10000)}` });
   };
 
+  // Митигация риска OPERATIONAL: обработка offline-режима
+  const handleRetryApi = () => {
+    setIsOfflineMode(false);
+    setApiError(null);
+    track('api_retry_clicked');
+  };
+
   return (
     <div className="page">
+      {/* Митигация риска OPERATIONAL: banner offline-режима */}
+      {isOfflineMode && (
+        <div className="offlineBanner">
+          <p>⚠️ Временная проблема с проверкой доступности</p>
+          <p>Мы не можем проверить наличие товаров в реальном времени. Оформите заказ — менеджер свяжется в течение 15 минут для подтверждения.</p>
+          <div className="bannerActions">
+            <button onClick={() => setIsOfflineMode(false)}>Продолжить заказ</button>
+            <button className="ghost" onClick={handleRetryApi}>Попробовать снова</button>
+          </div>
+        </div>
+      )}
+      
       <header className="hero">
         <div>
           <h1>Bloom Vibe</h1>
@@ -271,7 +340,7 @@ export default function App() {
           <div className="promo">
             <label htmlFor="promo">Промокод</label>
             <div className="promoRow"><input id="promo" type="text" placeholder="Введите промокод" value={promoCode} onChange={(e) => setPromoCode(e.target.value)} /><button onClick={applyPromo}>Применить</button></div>
-            {appliedPromo && <p className={isMasterPromo ? 'success' : 'info'}>{isMasterPromo ? 'Мастер-промокод PIRAT активирован: корзина бесплатна 🏴‍☠️' : `Промокод «${appliedPromo}» применён.`}</p>}
+            {appliedPromo && <p className="info">Промокод «{appliedPromo}» применён.</p>}
           </div>
 
           <div className="summary"><div><span>Товары:</span><strong>{formatRub(subtotal)}</strong></div><div><span>Доставка:</span><strong>{formatRub(deliveryCost)}</strong></div><div><span>Итого:</span><strong>{formatRub(total)}</strong></div></div>
